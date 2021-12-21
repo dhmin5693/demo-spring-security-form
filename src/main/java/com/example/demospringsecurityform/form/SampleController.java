@@ -22,6 +22,12 @@ public class SampleController {
         return "index";
     }
 
+    @GetMapping("/info")
+    public String info(Model model) {
+        model.addAttribute(MODEL_NAME, "This is info");
+        return "info";
+    }
+
     @GetMapping("/admin")
     public String admin(Model model, Principal principal) {
         model.addAttribute(MODEL_NAME, "This is admin, " + principal.getName());
@@ -32,11 +38,5 @@ public class SampleController {
     public String dashboard(Model model, Principal principal) {
         model.addAttribute(MODEL_NAME, "This is dashboard, " + principal.getName());
         return "dashboard";
-    }
-
-    @GetMapping("/info")
-    public String info(Model model, Principal principal) {
-        model.addAttribute(MODEL_NAME, "This is info, " + principal.getName());
-        return "info";
     }
 }
