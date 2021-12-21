@@ -1,6 +1,7 @@
 package com.example.demospringsecurityform.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,5 +21,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // security에서 제공하는 기본 form login 기능
         httpSecurity.formLogin();
         httpSecurity.httpBasic();
+    }
+
+    // user 정보 설정
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        // noop: 암호화하지 않음, noop 대신 password incoder 방식 선택 가능
+        auth.inMemoryAuthentication()
+            .withUser("min").password("{noop}1234").roles("USER")
+            .and()
+            .withUser("admin").password("{noop}1234").roles("ADMIN");
     }
 }
