@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AccountController {
 
-    private final AccountRepository accountRepository;
+    private final AccountService accountService;
 
-    public AccountController(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
     }
 
     // 단순 회원 생성을 위한 핸들러
@@ -18,10 +18,6 @@ public class AccountController {
     public Account createAccount(@PathVariable String role,
                                  @PathVariable String username,
                                  @PathVariable String password) {
-        return accountRepository.save(Account.builder()
-                                             .username(username)
-                                             .password(password)
-                                             .role(role)
-                                             .build());
+        return accountService.save(username, password, role);
     }
 }

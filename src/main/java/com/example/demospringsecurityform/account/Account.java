@@ -31,4 +31,9 @@ public class Account {
         this.password = password;
         this.role = role;
     }
+
+    public Account encoded() {
+        this.password = "{noop}" + password;
+        return this;
+    }
 }

@@ -29,4 +29,14 @@ public class AccountService implements UserDetailsService {
                    .roles(account.getRole())
                    .build();
     }
+
+    public Account save(String username, String password, String role) {
+        var account = Account.builder()
+                             .username(username)
+                             .password(password)
+                             .role(role)
+                             .build();
+
+        return accountRepository.save(account.encoded());
+    }
 }
