@@ -7,10 +7,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -20,6 +24,9 @@ class AccountControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private AccountService accountService;
 
     @Test
     void index_anonymous() throws Exception {
@@ -86,5 +93,27 @@ class AccountControllerTest {
         mockMvc.perform(get("/admin"))
                .andDo(print())
                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional
+    void login_fail() throws Exception {
+        accountService.save("min", "1234", "USER");
+
+        mockMvc.perform(formLogin()
+                            .user("min")
+                            .password("5678"))
+               .andExpect(unauthenticated());
+    }
+
+    @Test
+    @Transactional
+    void login() throws Exception {
+        accountService.save("min", "1234", "USER");
+
+        mockMvc.perform(formLogin()
+                            .user("min")
+                            .password("1234"))
+               .andExpect(authenticated());
     }
 }
