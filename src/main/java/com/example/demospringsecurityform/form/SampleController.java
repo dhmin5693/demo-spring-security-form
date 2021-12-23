@@ -10,6 +10,12 @@ public class SampleController {
 
     private static final String MODEL_NAME = "message";
 
+    private final SampleService sampleService;
+
+    public SampleController(SampleService sampleService) {
+        this.sampleService = sampleService;
+    }
+
     @GetMapping("/")
     public String index(Model model, Principal principal) {
         if (principal == null) {
@@ -37,6 +43,7 @@ public class SampleController {
     @GetMapping("/dashboard")
     public String dashboard(Model model, Principal principal) {
         model.addAttribute(MODEL_NAME, "This is dashboard, " + principal.getName());
+        sampleService.dashboard();
         return "dashboard";
     }
 }
