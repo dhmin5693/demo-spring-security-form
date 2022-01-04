@@ -1,12 +1,14 @@
 package com.example.demospringsecurityform.config;
 
 import java.util.List;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.FilterInvocation;
@@ -24,6 +26,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .mvcMatchers("/", "info", "/account/**").permitAll()
             .mvcMatchers("/admin").hasRole("ADMIN")
             .mvcMatchers("/user").hasRole("USER")
+            // 인증을 무시하기보단 모든 권한을 주는 정도의 차이
+            .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
             .anyRequest().authenticated()
             .expressionHandler(securityExpressionHandler());
 //            .accessDecisionManager(accessDecisionManager());
@@ -32,6 +36,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin();
         http.httpBasic();
     }
+
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        // static resource는 인증 미적용, 필터 자체를 미적용
+//        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+//    }
 
     public SecurityExpressionHandler<FilterInvocation> securityExpressionHandler() {
         RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
