@@ -37,6 +37,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin();
         http.httpBasic();
 
+        // off csrf
+        http.csrf().disable();
+
         // 현재 스레드에서 생성한 하위 스레드에도 SecurityContext를 공유
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
