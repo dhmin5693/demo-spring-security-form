@@ -8,7 +8,6 @@ import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,6 +38,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // off csrf
 //        http.csrf().disable();
+
+        http.logout()
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/")
+            .deleteCookies(); // 쿠키 기반의 로그인을 사용한다면 검토해볼만한 옵션
 
         // 현재 스레드에서 생성한 하위 스레드에도 SecurityContext를 공유
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
