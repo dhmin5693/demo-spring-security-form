@@ -24,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-            .mvcMatchers("/", "info", "/account/**").permitAll()
+            .mvcMatchers("/", "info", "/account/**", "/signup").permitAll()
             .mvcMatchers("/admin").hasRole("ADMIN")
             .mvcMatchers("/user").hasRole("USER")
             // 인증을 무시하기보단 모든 권한을 주는 정도의 차이
@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic();
 
         // off csrf
-        http.csrf().disable();
+//        http.csrf().disable();
 
         // 현재 스레드에서 생성한 하위 스레드에도 SecurityContext를 공유
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
