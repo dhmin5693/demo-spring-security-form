@@ -33,7 +33,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //            .accessDecisionManager(accessDecisionManager());
 
         // security에서 제공하는 기본 form login 기능
-        http.formLogin();
+        http.formLogin()
+            .usernameParameter("my-username")
+            .passwordParameter("my-password")
+            .successForwardUrl("/dashboard")
+            .failureForwardUrl("/");
         http.httpBasic();
 
         // off csrf
