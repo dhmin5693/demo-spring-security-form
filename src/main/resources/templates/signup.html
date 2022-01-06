@@ -8,7 +8,7 @@
 
 <form action="/signup" th:action="@{/signup}" th:object="${account}" method="post">
   <p>username: <label><input type="text" th:field="*{username}" /></label></p>
-  <p>password: <label><input type="text" th:field="*{password}" /></label></p>
+  <p>password: <label><input type="password" th:field="*{password}" /></label></p>
   <p><input type="submit" value="SignUp"/> </p>
 </form>
 

@@ -34,10 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // security에서 제공하는 기본 form login 기능
         http.formLogin()
-            .usernameParameter("my-username")
-            .passwordParameter("my-password")
-            .successForwardUrl("/dashboard")
-            .failureForwardUrl("/");
+            .loginPage("/login") // 지정하게 되면 default loginGeneratingFilter 사용 불가
+            .permitAll();
+
         http.httpBasic();
 
         // off csrf
