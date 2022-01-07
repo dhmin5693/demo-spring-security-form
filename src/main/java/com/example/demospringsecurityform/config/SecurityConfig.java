@@ -57,6 +57,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // 현재 스레드에서 생성한 하위 스레드에도 SecurityContext를 공유
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+
+        http.exceptionHandling()
+            .accessDeniedPage("/access-denied");
     }
 
 //    @Override
