@@ -37,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .loginPage("/login") // 지정하게 되면 default loginGeneratingFilter 사용 불가
             .permitAll();
 
+        // basic 인증 지원. Authorization 헤더에 base64로 암호화한 username:password 추가
         http.httpBasic();
 
         // off csrf
@@ -46,6 +47,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .logoutUrl("/logout")
             .logoutSuccessUrl("/")
             .deleteCookies(); // 쿠키 기반의 로그인을 사용한다면 검토해볼만한 옵션
+
+        http.sessionManagement()
+            .sessionFixation() // 세션 고정
+            .changeSessionId() // 세션 ID 변경
+            .invalidSessionUrl("/")
+            .maximumSessions(1) // 동시에 1개의 세션만 허용
+            .maxSessionsPreventsLogin(true); // 세션 최대 시 기존 로그인은 세션 만료
 
         // 현재 스레드에서 생성한 하위 스레드에도 SecurityContext를 공유
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
