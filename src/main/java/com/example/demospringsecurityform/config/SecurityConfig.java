@@ -1,6 +1,8 @@
 package com.example.demospringsecurityform.config;
 
+import com.example.demospringsecurityform.account.AccountService;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDecisionManager;
@@ -18,7 +20,10 @@ import org.springframework.security.web.access.expression.WebExpressionVoter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final AccountService accountService;
 
     // 설정이 필요한 메소드를 Override하는 식으로 구현
     @Override
@@ -68,6 +73,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 System.out.println(username + " is denied to access " + request.getRequestURI());
                 response.sendRedirect("/access-denied");
             });
+
+        http.rememberMe()
+            .alwaysRemember(false)
+            .rememberMeParameter("remember-me")
+            .tokenValiditySeconds(600)
+            .userDetailsService(accountService)
+            .key("remember-me-sample");
     }
 
 //    @Override
