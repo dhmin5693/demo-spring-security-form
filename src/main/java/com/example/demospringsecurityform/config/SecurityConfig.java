@@ -1,6 +1,7 @@
 package com.example.demospringsecurityform.config;
 
 import com.example.demospringsecurityform.account.AccountService;
+import com.example.demospringsecurityform.common.LoggingFilter;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -17,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
+import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -80,6 +82,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .tokenValiditySeconds(600)
             .userDetailsService(accountService)
             .key("remember-me-sample");
+
+        // 1순위 필터보다 앞에 LoggingFilter를 추가
+        http.addFilterBefore(new LoggingFilter(), WebAsyncManagerIntegrationFilter.class);
     }
 
 //    @Override
