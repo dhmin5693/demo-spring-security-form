@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xml:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>User</title>
@@ -7,6 +7,9 @@
 <body>
 
 <h1 th:text="${message}">User</h1>
+<tr th:each="book : ${books}">
+  <td><span th:text="${book.title}">title</span></td>
+</tr>
 
 </body>
 </html>

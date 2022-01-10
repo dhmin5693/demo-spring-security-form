@@ -2,9 +2,11 @@ package com.example.demospringsecurityform.form;
 
 import com.example.demospringsecurityform.account.Account;
 import com.example.demospringsecurityform.account.UserAccount;
+import com.example.demospringsecurityform.book.BookRepository;
 import com.example.demospringsecurityform.common.SecurityLogger;
 import com.example.demospringsecurityform.config.CurrentUser;
 import java.util.concurrent.Callable;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,15 +14,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@RequiredArgsConstructor
 public class SampleController {
 
     private static final String MODEL_NAME = "message";
 
     private final SampleService sampleService;
-
-    public SampleController(SampleService sampleService) {
-        this.sampleService = sampleService;
-    }
+    private final BookRepository bookRepository;
 
     @GetMapping("/")
     public String index(Model model, @CurrentUser Account account) {
@@ -55,6 +55,7 @@ public class SampleController {
     @GetMapping("/user")
     public String user(Model model, @AuthenticationPrincipal UserAccount userAccount) {
         model.addAttribute(MODEL_NAME, "This is user, " + userAccount.getAccount().getUsername());
+        model.addAttribute("books", bookRepository.findCurrentUserBooks());
         return "user";
     }
 
